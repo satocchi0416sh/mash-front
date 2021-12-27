@@ -24,8 +24,8 @@ import Send from './component/admin/Send';
 
 
 function App() {
-  const [id, setId] = useState(null)
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [id, setId] = useState(1)
+  const [isLoggedIn, setIsLoggedIn] = useState(true)
   const [cartNumber, setCartNumber] = useState(0)
   const [likeNumber, setLikeNumber] = useState(0)
   const [noticeNumber, setNoticeNumber] = useState(0)
@@ -33,6 +33,7 @@ function App() {
   const [lload, setLload] = useState(false)
   const [nload, setNload] = useState(false)
 
+  /*
   useEffect(()=>{
     api.get("auth",{withCredentials:true}).then((response)=>{
       console.log(response.data)
@@ -41,26 +42,26 @@ function App() {
         setIsLoggedIn(true)
       }
     })
-  },[])
+  },[])*/
 
   useEffect(() => {
     api.get(`getNoticeNum/${id}`).then((response) => {
       setNoticeNumber(response.data.num)
       console.log(response.data.num)
     })
-  },[id, nload])
+  }, [id, nload])
 
   useEffect(() => {
     api.get(`getItems/${id}`).then((response) => {
       setCartNumber(response.data.length)
     })
-  },[id, cload])
-  
+  }, [id, cload])
+
   useEffect(() => {
     api.get(`getLikes/${id}`).then((response) => {
       setLikeNumber(response.data.length)
     })
-  },[id, lload])
+  }, [id, lload])
 
   const loadingC = () => {
     setCload(!cload)
@@ -73,17 +74,17 @@ function App() {
   const loadingN = () => {
     setNload(!nload)
   }
-  
 
-  const login=(id)=>{
+
+  const login = (id) => {
     setId(id)
     setIsLoggedIn(true)
   }
 
-  const logout=()=>{
+  const logout = () => {
     setIsLoggedIn(false)
     setId(null)
-    api.post("logout",{withCredentials:true}).then((response)=>{
+    api.post("logout", { withCredentials: true }).then((response) => {
       console.log(response.data)
     })
   }
@@ -92,10 +93,10 @@ function App() {
     <div className="App">
 
       <BrowserRouter>
-        <Header isLoggedIn={isLoggedIn} id={id} logout={logout} cartNumber={cartNumber} likeNumber={likeNumber} noticeNumber={noticeNumber}/>
+        <Header isLoggedIn={isLoggedIn} id={id} logout={logout} cartNumber={cartNumber} likeNumber={likeNumber} noticeNumber={noticeNumber} />
         <Switch>
           <Route exact path="/">
-            <Top id={id}/>
+            <Top id={id} />
           </Route>
 
           <Route path="/search">
@@ -103,7 +104,7 @@ function App() {
           </Route>
 
           <Route path="/cardInfo/:cardId">
-            <CardInfo id={id} loadingC={loadingC} loadingL={loadingL}/>
+            <CardInfo id={id} loadingC={loadingC} loadingL={loadingL} />
           </Route>
 
           <Route path="/signup">
@@ -119,11 +120,11 @@ function App() {
           </Route>
 
           <Route path="/favorite/:userId">
-            <Favorite id={id} loadingL={loadingL}/>
+            <Favorite id={id} loadingL={loadingL} />
           </Route>
 
           <Route path="/cart/:userId">
-            <Cart id={id} loadingC={loadingC}/>
+            <Cart id={id} loadingC={loadingC} />
           </Route>
 
           <Route path="/order/:userId">
@@ -131,7 +132,7 @@ function App() {
           </Route>
 
           <Route path="/payment/:userId">
-            <Payment id={id} loadingC={loadingC}/>
+            <Payment id={id} loadingC={loadingC} />
           </Route>
 
           <Route path="/inquiry">
@@ -139,37 +140,37 @@ function App() {
           </Route>
 
           <Route path="/notice/:id">
-            <Notice id={id} loadingN={loadingN}/>
+            <Notice id={id} loadingN={loadingN} />
           </Route>
 
           <Route
-          path="/admin"
-          render={({match: { url }})=>(
-            <>
-              <Switch>
-                <Route exact path={`${url}`}>
-                  <TopA />
-                </Route>
-                <Route path={`${url}/add`}>
-                  <Add />
-                </Route>
-                <Route path={`${url}/series`}>
-                  <Series />
-                </Route>
-                <Route path={`${url}/setting`}>
-                  <CardSetting />
-                </Route>
-                <Route path={`${url}/inquiry`}>
-                  <InquiryA />
-                </Route>
-                <Route path={`${url}/send/:userId/:inquiryId`}>
-                  <Send />
-                </Route>
-              </Switch>
-            </>
-          )}
+            path="/admin"
+            render={({ match: { url } }) => (
+              <>
+                <Switch>
+                  <Route exact path={`${url}`}>
+                    <TopA />
+                  </Route>
+                  <Route path={`${url}/add`}>
+                    <Add />
+                  </Route>
+                  <Route path={`${url}/series`}>
+                    <Series />
+                  </Route>
+                  <Route path={`${url}/setting`}>
+                    <CardSetting />
+                  </Route>
+                  <Route path={`${url}/inquiry`}>
+                    <InquiryA />
+                  </Route>
+                  <Route path={`${url}/send/:userId/:inquiryId`}>
+                    <Send />
+                  </Route>
+                </Switch>
+              </>
+            )}
           />
-            
+
         </Switch>
       </BrowserRouter>
 
